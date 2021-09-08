@@ -50,6 +50,8 @@ def keyword_sev(message, uid):  # 私人对话用
         fk(-1, uid)
     elif message[0:8] == '/weather':
         weather(-1, uid, message[9:])
+    elif message[0:6] == '/music':
+        music(-1, uid, message[7:])
     return
 
 
@@ -98,8 +100,8 @@ def help_list(gid, uid):  # 帮助列表
             'Monasi~\nDe os Sulania!\nNa nowa,tot contilu os:\n'
             '1.help\n'+'2.setu'+'3./kaxi Sulaian <word>'))
     else:
-        requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid, 'Monasi~\n'
-            'De os Sulania!\n'+'Na nowa,tot '+'contilu os:\n'
+        requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
+            'Monasi~\nDe os Sulania!\n'+'Na nowa,tot '+'contilu os:\n'
             '1./help\n'+'2./setu\n'+'3./kaxi Sulaian <word>'))
     return
 
@@ -147,18 +149,33 @@ def weather(gid, uid, loc):  # 墨迹天气抓取
             soup = BeautifulSoup(r.text, 'html.parser')
             infor = soup.find_all('meta')[2].attrs['content']
             if gid != -1:
-                requests.get(url='http://127.0.0.1:5000/send_group_msg?group={0}&message={1}'.format(gid,
+                requests.get(url='http://127.0.0.1:5000/send_group_msg?group_id={0}&message={1}'.format(gid,
                     '[CQ:at,qq= ' + str(uid) + r']\n' +infor))
             else:
                 requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid, infor))
             return
     if gid != -1:
-        requests.get(url='http://127.0.0.1:5000/send_group_msg?group={0}&message={1}'.format(gid,
+        requests.get(url='http://127.0.0.1:5000/send_group_msg?group_id={0}&message={1}'.format(gid,
             '[CQ:at,qq= ' + str(uid) + r']\n' + '抱歉，目前还没有收录该地区~'))
 
     else:
         requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
             '抱歉，目前还没有收录该地区~'))
+    return
+
+
+def music(gid, uid, sch):
+    r = requests.get(url='https://api.ayano.top/music/index.php?api=search&music=netease&search=' + sch)
+    id_ = r.json()[0]['id']
+    # r = requests.get(url='https://api.ayano.top/music/index.php?api=url&music=netease&id=' + str(id_))
+    # music_file = r.json()['url']
+    # 音乐自定义时再用QAQ
+    if gid != -1:
+        requests.get(url='http://127.0.0.1:5000/send_group_msg?group_id={0}&message={1}'.format(gid,
+            '[CQ:music,type=163,id=' + str(id_) + r']'))
+    else:
+        requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
+            '[CQ:music,type=163,id=' + str(id_) + r']'))
     return
 
 
