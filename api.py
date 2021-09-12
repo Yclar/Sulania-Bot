@@ -1,4 +1,5 @@
 import requests
+import os
 from bs4 import BeautifulSoup
 
 dix = ([[0, 0] for x in range(10001)])  # 单词存储
@@ -52,6 +53,8 @@ def keyword_sev(message, uid):  # 私人对话用
         weather(-1, uid, message[9:])
     elif message[0:6] == '/music':
         music(-1, uid, message[7:])
+    elif message[0:6] == '/login':
+        user_login(-1, uid)
     return
 
 
@@ -66,6 +69,10 @@ def keyword(message, uid, gid):  # 群聊用
         fk(gid, uid)
     elif message[0:8] == '/weather':
         weather(gid, uid, message[9:])
+    elif message[0:6] == '/music':
+        music(gid, uid, message[7:])
+    elif message[0:6] == '/login':
+        user_login(gid, uid)
     return
 
 
@@ -176,6 +183,35 @@ def music(gid, uid, sch):
     else:
         requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
             '[CQ:music,type=163,id=' + str(id_) + r']'))
+    return
+
+
+def user_login(gid, uid):
+    f = open("user_list", "r")
+    for line in f:
+        if (str(uid) + '\n') == line:
+            if gid != -1:
+                requests.get(url='http://127.0.0.1:5000/send_group_msg?group_id={0}&message={1}'.format(gid,
+                    '[CQ:at,qq=' + str(uid) + r']' + 'Chi slovania-stalin! Chi alifa login!'))
+            else:
+                requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
+                    'Chi slovania-stalin! Chi alifa login!'))
+            f.close()
+            return
+    f.close()
+    f = open("user_list", "a+")
+    f.write(str(uid) + '\n')
+    f.close()
+    path = os.getcwd()
+    f = open('{0}\\user_file\\{1}'.format(path, str(uid)), "w")
+    # 填入状态
+    f.close()
+    if gid != -1:
+        requests.get(url='http://127.0.0.1:5000/send_group_msg?group_id={0}&message={1}'.format(gid,
+            '[CQ:at,qq=' + str(uid) + r']' + 'Susid!'))
+    else:
+        requests.get(url='http://127.0.0.1:5000/send_private_msg?user_id={0}&message={1}'.format(uid,
+            'Susid!'))
     return
 
 
