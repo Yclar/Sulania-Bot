@@ -1,14 +1,16 @@
-<center>Sulania Bot</center>
-
 <center>
-
-![](https://cdn.luogu.com.cn/upload/image_hosting/ly04sacv.png)
-
+  # Sulania Bot
 </center>
 
-###<center>一个基于gocqhttp的，生草的中文-苏拉语QQbot</center>
+<center>
+  ![](https://cdn.luogu.com.cn/upload/image_hosting/ly04sacv.png)
+</center>
 
-##目前主要功能：
+<center>
+  ### 一个基于gocqhttp的，生草的中文-苏拉语QQbot
+</center>
+
+## 目前主要功能：
 
 1.苏拉语字典
 
@@ -20,11 +22,11 @@
 
 5.根据账号登录信息
 
-##建设中：
+## 建设中：
 
 1.洛谷的账号绑定
 
-##特别感谢名单：
+## 特别感谢名单：
 
 1.把我拉入坑的小咸鱼~~学姐~~
 
